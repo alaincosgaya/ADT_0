@@ -5,9 +5,9 @@
  */
 package bankv1;
 
-import logic.ControladorCustomerImplement;
-import logic.ControladorCustomerInterface;
-
+import control.*;
+import exception.*;
+import model.*;
 /**
  *
  * @author idoia
@@ -18,7 +18,7 @@ public class BankV1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ControladorCustomerInterface datosCustom = new ControladorCustomerImplement();
+        
     }
     
 }

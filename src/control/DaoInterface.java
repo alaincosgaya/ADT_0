@@ -5,14 +5,17 @@
  */
 package control;
 
-import model.Customer;
+import java.util.Collection;
+import java.util.Map;
+import model.*;
 
 /**
  *
  * @author 2dam
  */
 public interface DaoInterface {
-   public void createCustomer(Customer cust,int Id,String firstName,
-    String lastName,String middleInitial,String street,String city,
-    String state,int zip,int phone,String email)throws Exception;
+   public void createCustomer(Customer cust)throws Exception;
+   public Customer consultCustomer(int id)throws Exception;
+   public Customer_account consultAccounts(int idCustom)throws Exception;
+   public void createAccount(int id, Account accoun)throws Exception;
 }
