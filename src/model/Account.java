@@ -14,6 +14,7 @@ import java.sql.Date;
  * @author idoia
  */
 public class Account implements java.io.Serializable{
+    
     private int id;
     private String description;
     private float balance;
