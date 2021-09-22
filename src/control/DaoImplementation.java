@@ -138,9 +138,10 @@ public class DaoImplementation implements DaoInterface {
     }
 
     @Override
-    public Customer_account consultAccounts(int idCustom) throws CreateException, ConnectException, DaoException {
+    public Collection<Account> consultAccounts(int idCustom) throws ReadException, ConnectException, DaoException {
         
-        Customer_account cust = null;
+        Account account = null;
+        Collection<Account> acco =  new ArrayList<>();
         ResultSet rs = null;
         try {
             this.conectar();
@@ -154,18 +155,24 @@ public class DaoImplementation implements DaoInterface {
             rs = stmt.executeQuery();
             
             while (rs.next()) {
-                cust = new Customer_account();
-                cust.setIdCustom(idCustom);
-                cust.setIdAccount(rs.getInt("customer_account.accounts_id"));
+                account = new Account();
+                account.setId(idCustom);
+                account.setDescription(rs.getString("account.description"));
+                account.setBalance(rs.getFloat("account.balance"));
+                account.setCreditLine(rs.getFloat("account.creditLine"));
+                account.setBeginBalance(rs.getFloat("account.beginBalance"));
+                account.setBeginBalanceTimestamp(rs.getDate("account.beginBalanceTimestamp"));
+                account.setType(rs.getString("account.type"));
                 
+                acco.add(account);
             }
 
         } catch (Exception e) {
-            throw new CreateException("Error al consultar");
+            throw new ReadException("Error al Leer");
         }
         this.desconectar();
         
-        return cust;
+        return acco;
         
     }
 
