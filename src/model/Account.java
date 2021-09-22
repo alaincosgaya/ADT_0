@@ -92,8 +92,8 @@ public class Account implements java.io.Serializable{
         return type;
     }
 
-    public void setType(AccountType type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = AccountType.valueOf(type);
     }
 
     @Override

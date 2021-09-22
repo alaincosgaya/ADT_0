@@ -12,11 +12,15 @@ import model.*;
 
 /**
  *
- * @author 2dam
+ * @author Idoia Ormaetxea
  */
 public interface DaoInterface {
    public void createCustomer(Customer cust)throws Exception;
    public Customer consultCustomer(int id)throws Exception;
    public Customer_account consultAccounts(int idCustom)throws Exception;
-   public void createAccount(int id, Account accoun)throws Exception;
+   public void createAccount(int id, Account account)throws Exception;
+   public void createCustomerAccount(int id, Account account)throws Exception;
+   public Account consultDataAccount(int id)throws Exception;
+   public void createMovement(Movement move)throws Exception;
+   public Movement consultMovement(int id)throws Exception;
 }

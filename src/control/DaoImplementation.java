@@ -5,26 +5,17 @@
  */
 package control;
 
-import exception.CreateException;
-import exception.DaoException;
+import exception.*;
 import java.net.ConnectException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
+import java.sql.*;
+import java.util.*;
 
-import model.Account;
-import model.Customer;
-import model.Customer_account;
+
+import model.*;
 
 /**
  *
- * @author 2dam
+ * @author Idoia Ormaetxea
  */
 public class DaoImplementation implements DaoInterface {
 
@@ -70,11 +61,16 @@ public class DaoImplementation implements DaoInterface {
         }
     }
 
-    private final String createCustomer = "INSERT INTO customer(id,city,email,firstName,lastName,middleInitial,phone,state,street,zip) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private final String consultCustomer = "";
-    private final String consultAccounts = "";
-    private final String createAccount = "";
-    
+    private final String createCustomer = "INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private final String consultCustomer = "SELECT customer.* FROM customer WHERE customer.id = ?";
+    private final String consultAccounts = "SELECT account.* FROM customer_account, account WHERE customer_account.customers_id = ? AND customer_account.accounts_id = account.id";
+    private final String createAccount = "INSERT INTO account VALUES (?,?,?,?,?,?,?)";
+    private final String createCustomerAccount = "INSERT INTO customer_account VALUES (?,?)";
+    private final String consultDataAccount = "SELECT account.* FROM account WHERE account.id = ?";
+    private final String createMovement = "INSERT INTO movement VALUES (?,?,?,?,?,?)";
+    private final String consultMovement = "SELECT movement.* FROM account, movement WHERE movement.account_id = account.id AND account.id = ?";
+
+
     @Override
     public void createCustomer(Customer cust) throws CreateException, ConnectException, DaoException {
         try {
@@ -192,11 +188,135 @@ public class DaoImplementation implements DaoInterface {
             stmt.setString(7, account.getType().toString());
 
             stmt.executeUpdate();
+            
+            //stmt = con.prepareStatement(createCustomerAccount);
+            //stmt.setInt(1, account.getId());
+            //stmt.setInt(2, id);
+            
+            //stmt.executeUpdate();
 
         } catch (Exception e) {
             throw new CreateException("Error al Crear");
         }
         this.desconectar();
+        
+        createCustomerAccount(id, account);
+    }
+    
+    @Override
+    public void createCustomerAccount(int id, Account account) throws CreateException, ConnectException, DaoException {
+        
+        try {
+            this.conectar();
+        } catch (DaoException e1) {
+            throw new ConnectException(e1.getMessage());
+        }
+        try {
+            stmt = con.prepareStatement(createCustomerAccount);
+            stmt.setInt(1, id);
+            stmt.setInt(2, account.getId());
+            
+            
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new CreateException("Error al Crear");
+        }
+        this.desconectar();
+    }
+
+    @Override
+    public Account consultDataAccount(int id) throws CreateException, ConnectException, DaoException {
+        
+        Account account = null;
+        ResultSet rs = null;
+        try {
+            this.conectar();
+        } catch (DaoException e1) {
+            throw new ConnectException(e1.getMessage());
+        }
+        try {
+            stmt = con.prepareStatement(consultDataAccount);
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                account = new Account();
+                account.setId(id);
+                account.setDescription(rs.getString("account.description"));
+                account.setBalance(rs.getFloat("account.balance"));
+                account.setCreditLine(rs.getFloat("account.creditLine"));
+                account.setBeginBalance(rs.getFloat("account.beginBalance"));
+                account.setBeginBalanceTimestamp(rs.getDate("account.beginBalanceTimestamp"));
+                account.setType(rs.getString("account.type"));
+                
+            }
+
+        } catch (Exception e) {
+            throw new CreateException("Error al consultar");
+        }
+        this.desconectar();
+        
+        return account;
+    }
+
+    @Override
+    public void createMovement(Movement move) throws CreateException, ConnectException, DaoException {
+        try {
+            this.conectar();
+        } catch (DaoException e1) {
+            throw new ConnectException(e1.getMessage());
+        }
+        try {
+            stmt = con.prepareStatement(createMovement);
+            stmt.setInt(1, move.getId());
+            stmt.setInt(2, move.getIdAccount());
+            stmt.setDate(3, move.getTimestamp());
+            stmt.setFloat(4, move.getAmount());
+            stmt.setFloat(5, move.getBalance());
+            stmt.setString(6, move.getDescription());
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new CreateException("Error al Crear");
+        }
+        this.desconectar();
+    }
+
+    @Override
+    public Movement consultMovement(int id) throws CreateException, ConnectException, DaoException {
+        Movement move = null;
+        ResultSet rs = null;
+        try {
+            this.conectar();
+        } catch (DaoException e1) {
+            throw new ConnectException(e1.getMessage());
+        }
+        try {
+            stmt = con.prepareStatement(consultMovement);
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                move = new Movement();
+                move.setId(id);
+                move.setIdAccount(rs.getInt("movement.idAccount"));
+                move.setTimestamp(rs.getDate("movement.timestamp"));
+                move.setAmount(rs.getFloat("movement.amount"));
+                move.setBalance(rs.getFloat("movement.balance"));
+                move.setDescription(rs.getString("movement.description"));
+                
+            }
+
+        } catch (Exception e) {
+            throw new CreateException("Error al consultar");
+        }
+        this.desconectar();
+        
+        return move;
     }
 
    
