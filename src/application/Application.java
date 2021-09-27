@@ -20,7 +20,6 @@ public class Application {
      */
     public static void main(String[] args) {
         ViewFactory view = new ViewFactory();
-        
         ModelFactory model = new ModelFactory();
         Controller controller = new Controller();
         controller.run(view.getView(),model.getModel());
