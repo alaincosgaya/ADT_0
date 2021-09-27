@@ -187,7 +187,7 @@ public class Application {
         if(cus != null){
             id_acc=Util.leerInt("Introduce la id de la cuenta:");
             acc = consultAccount(id_acc);
-            if(acc != null){ 
+            if(acc != null){
                 createCustomerAccount(id_cus,acc);
                 System.out.println("Se agrego el cliente a la cuenta");
             }else{
