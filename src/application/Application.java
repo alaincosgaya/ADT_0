@@ -7,7 +7,7 @@ package application;
 
     /**
      *
-     * @author Jonathan
+     * @author Jonathan, Alain
      */
 public class Application {
 
