@@ -16,6 +16,6 @@ public interface ModelInterface {
      * Metodos que van en la implementacion
      * @return El dato que guarda el saludo
      */
-    public String getGreeting()throws Exception;
+    public String getGreeting();
   
 }

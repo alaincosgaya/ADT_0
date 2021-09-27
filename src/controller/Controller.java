@@ -18,7 +18,7 @@ public class Controller {
      * @param view La vista que muestra los datos del modelo
      * @param model Lleva los datos a mostrar
      */
-    public void run(ViewInterface view, ModelInterface model) throws Exception{
+    public void run(ViewInterface view, ModelInterface model){
         String data;
         data = model.getGreeting();
         view.showGreeting(data);
