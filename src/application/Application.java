@@ -164,14 +164,10 @@ public class Application {
         cus = consultCustomer(id_cus);
         if(cus != null){
             acc = new Account();
-            id_acc = Util.leerInt("Introduce la id de la cuenta:");
-            acc = consultAccount(id_acc);
-            if(acc == null){
-                acc.setData(id_acc);
-                createAccount(id_cus,acc);
-            }else{
-                System.out.println("La id introducida corresponde ya a una cuenta existente");
-            }
+            acc.setData();
+            id_acc = createAccount(id_cus,acc);
+            System.out.println("La id de la cuenta creada es: "+id_acc);
+            
            
         }else{
             System.out.println("La id introducida no corresponde a ningun cliente");
