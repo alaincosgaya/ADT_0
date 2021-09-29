@@ -21,5 +21,5 @@ public interface DaoInterface {
    public void createCustomerAccount(Long id, Long id_acc)throws Exception;
    public Account consultDataAccount(Long id)throws Exception;
    public void createMovement(Movement move)throws Exception;
-   public Collection<Movement> consultMovement(Long id)throws Exception;
+   public Collection<Movement> consultMovements(Long id)throws Exception;
 }

@@ -69,7 +69,7 @@ public class DaoImplementation implements DaoInterface {
     private final String consultDataAccount = "SELECT account.* FROM account WHERE account.id = ?";
     private final String createMovement = "INSERT INTO movement VALUES (?,?,?,?,?,?)";
     private final String consultMovement = "SELECT movement.* FROM account, movement WHERE movement.account_id = account.id AND account.id = ?";
-
+    private final String updateAccountBalance = "UPDATE account SET account.balance = account.balance + ? WHERE account.id = ?";
 
     @Override
     public Long createCustomer(Customer cust) throws CreateException, ConnectException, DaoException {
@@ -279,7 +279,9 @@ public class DaoImplementation implements DaoInterface {
     }
 
     @Override
-    public void createMovement(Movement move) throws CreateException, ConnectException, DaoException {
+    public void createMovement(Movement move) throws CreateException, UpdateException, ConnectException, DaoException {
+        ResultSet rs = null;
+        
         try {
             this.conectar();
         } catch (DaoException e1) {
@@ -288,22 +290,29 @@ public class DaoImplementation implements DaoInterface {
         try {
             stmt = con.prepareStatement(createMovement);
 
-            stmt.setInt(1, move.getIdAccount());
+            stmt.setLong(1, move.getIdAccount());
             stmt.setDate(2, move.getTimestamp());
             stmt.setFloat(3, move.getAmount());
             stmt.setFloat(4, move.getBalance());
             stmt.setString(5, move.getDescription());
 
             stmt.executeUpdate();
-
+          
         } catch (Exception e) {
             throw new CreateException("Error al Crear");
+        }
+        try{
+            stmt = con.prepareStatement(updateAccountBalance);
+            stmt.setFloat(1,move.getBalance());
+            stmt.setLong(2,move.getIdAccount());
+        }catch (Exception ex){
+            throw new UpdateException("Error al modificar");
         }
         this.desconectar();
     }
 
     @Override
-    public Collection<Movement> consultMovement(Long id) throws CreateException, ConnectException, DaoException {
+    public Collection<Movement> consultMovements(Long id) throws CreateException, ConnectException, DaoException {
         Movement move = null;
         Collection<Movement> movements = new ArrayList<>();
         ResultSet rs = null;

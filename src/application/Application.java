@@ -17,18 +17,18 @@ public class Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         /**
          * Menu en el cual el usuario podrá elegir la opción que desee
          * @see menuPrincipal();
          */
        DaoInterface data = new DaoImplementation();
-        menuPrincipal(data);
+       menuPrincipal(data);
     }
     
 
-    private static void menuPrincipal(DaoInterface data) {
+    private static void menuPrincipal(DaoInterface data) throws Exception {
         
         int opcMenu;
         
@@ -114,7 +114,7 @@ public class Application {
         }while (opcMenu != 9);
     }
 
-    private static void createCustomer(DaoInterface data) {
+    private static void createCustomer(DaoInterface data) throws Exception {
         Customer cus;
         Long id_cus;
         cus = new Customer();
@@ -123,7 +123,7 @@ public class Application {
         System.out.println("La id de cliente que se te ha asignado es: "+id_cus);
     }
 
-    private static void consultCustomerData(DaoInterface data) {
+    private static void consultCustomerData(DaoInterface data) throws Exception {
         Customer cus;
         Long id_cus;
         id_cus=Util.leerLong("Introduce la id del cliente: ");
@@ -136,7 +136,7 @@ public class Application {
         }
     }
 
-    private static void ConsultClientAccounts(DaoInterface data) {
+    private static void ConsultClientAccounts(DaoInterface data) throws Exception {
         Customer cus;
         Collection<Account> accounts;
         Long id_cus;
@@ -153,7 +153,7 @@ public class Application {
         }
     }
 
-    private static void createCustomerAccount(DaoInterface data) {
+    private static void createCustomerAccount(DaoInterface data) throws Exception {
         Customer cus;
         Account acc;
         Long id_cus,id_acc;
@@ -171,7 +171,7 @@ public class Application {
         }
     }
 
-    private static void AddCustomerToAccount(DaoInterface data) {
+    private static void AddCustomerToAccount(DaoInterface data) throws Exception {
         Customer cus;
         Account acc;
         Long id_cus,id_acc;
@@ -191,7 +191,7 @@ public class Application {
         }
     }
 
-    private static void consultAccountDetails(DaoInterface data) {
+    private static void consultAccountDetails(DaoInterface data) throws Exception {
         Account acc;
         Long id_acc;
         id_acc = Util.leerLong("Introduce la id de la cuenta:");
@@ -203,12 +203,23 @@ public class Application {
             }
     }
 
-    private static void makeMovement(DaoInterface data) {
-        Movement mov;
-        Long id_mov;
+    private static void makeMovement(DaoInterface data) throws Exception {
+        Movement mov = new Movement();
+        Account acc;
+        Long id_acc;
+        id_acc = Util.leerLong("Introduce la id de la cuenta a la que se le va a hacer el movimiento:");
+        acc = data.consultDataAccount(id_acc);
+        if(acc != null){
+            mov.setData(id_acc);
+            data.createMovement(mov);
+            
+        }else{
+            System.out.println("La id introducida no corresponde a ninguna cuenta");
+        }
+        
     }
 
-    private static void consultAccountMovements(DaoInterface data) {
+    private static void consultAccountMovements(DaoInterface data) throws Exception {
         Long id_acc;
         Account acc;
         Collection<Movement> movements;
