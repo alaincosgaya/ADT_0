@@ -20,14 +20,14 @@ public class Customer {
     private String city;
     private String state;
     private int zip;
-    private int phone;
+    private long phone;
     private String email;
     
     public Customer(){
         
     }
 
-    public Customer(long id, String firstName, String lastName, String middleInitial, String street, String city, String state, int zip, int phone, String email) {
+    public Customer(long id, String firstName, String lastName, String middleInitial, String street, String city, String state, int zip, long phone, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -104,11 +104,11 @@ public class Customer {
         this.zip = zip;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 
@@ -129,7 +129,7 @@ public class Customer {
         city = Util.introducirCadena("Introduce your city");
         state = Util.introducirCadena("Introduce teh state");
         zip = Util.leerInt("Introduce the zip");
-        phone = Util.leerInt("Introduce your phone number");
+        phone = Util.leerLong("Introduce your phone number");
         email = Util.introducirCadena("Introduce your email");
     }
     

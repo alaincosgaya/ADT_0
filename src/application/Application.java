@@ -210,7 +210,7 @@ public class Application {
         id_acc = Util.leerLong("Introduce la id de la cuenta a la que se le va a hacer el movimiento:");
         acc = data.consultDataAccount(id_acc);
         if(acc != null){
-            mov.setData(id_acc);
+            mov.setData(id_acc,acc.getBalance());
             data.createMovement(mov);
             
         }else{

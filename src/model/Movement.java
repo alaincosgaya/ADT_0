@@ -6,7 +6,7 @@
 package model;
 
 import control.Util;
-import java.sql.Date;
+
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Movement {
     private long id;
     private long idAccount;
-    //private DatabaseDate timestamp;
+    
     private LocalDateTime timestamp;
     private float amount;
     private float balance;
@@ -86,10 +86,10 @@ public class Movement {
     
 
 
-    public void setData(Long id) {
+    public void setData(Long id,float balance) {
         idAccount = id;
         amount = Util.leerFloat("Itroduce the amount of the movement");
-        balance = Util.leerFloat("Introduce the balance of the movement");
+        this.balance=balance+amount;
         description = Util.introducirCadena("Introduce the description of the movement");
     }
 

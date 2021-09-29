@@ -63,15 +63,15 @@ public class DaoImplementation implements DaoInterface {
         }
     }
 
-    private final String createCustomer = "INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?)";
+    private final String createCustomer = "INSERT INTO customer (city,email,firstName,lastName,middleInitial,phone,state,street,zip) VALUES (?,?,?,?,?,?,?,?,?)";
     private final String consultCustomer = "SELECT customer.* FROM customer WHERE customer.id = ?";
     private final String consultAccounts = "SELECT account.* FROM customer_account, account WHERE customer_account.customers_id = ? AND customer_account.accounts_id = account.id";
-    private final String createAccount = "INSERT INTO account VALUES (?,?,?,?,?,?)";
+    private final String createAccount = "INSERT INTO account (balance,beginBalance,beginBalanceTimestamp,creditLine,description,type) VALUES (?,?,?,?,?,?)";
     private final String createCustomerAccount = "INSERT INTO customer_account VALUES (?,?)";
     private final String consultDataAccount = "SELECT account.* FROM account WHERE account.id = ?";
-    private final String createMovement = "INSERT INTO movement VALUES (?,?,?,?,?)";
+    private final String createMovement = "INSERT INTO movement (amount,balance,description,timestamp,account_id) VALUES (?,?,?,?,?)";
     private final String consultMovement = "SELECT movement.* FROM account, movement WHERE movement.account_id = account.id AND account.id = ?";
-    private final String updateAccountBalance = "UPDATE account SET account.balance = account.balance + ? WHERE account.id = ?";
+    private final String updateAccountBalance = "UPDATE account SET account.balance = ? WHERE account.id = ?";
 
     @Override
     public Long createCustomer(Customer cust) throws CreateException, ConnectException, DaoException {
@@ -85,15 +85,17 @@ public class DaoImplementation implements DaoInterface {
         try {
             stmt = con.prepareStatement(createCustomer,stmt.RETURN_GENERATED_KEYS);
             
-            stmt.setString(1, cust.getFirstName());
-            stmt.setString(2, cust.getLastName());
-            stmt.setString(3, cust.getMiddleInitial());
-            stmt.setString(4, cust.getStreet());
-            stmt.setString(5, cust.getCity());
-            stmt.setString(6, cust.getState());
-            stmt.setInt(7, cust.getZip());
-            stmt.setInt(8, cust.getPhone());
-            stmt.setString(9, cust.getEmail());
+            stmt.setString(1, cust.getCity());
+            stmt.setString(2, cust.getEmail());
+            stmt.setString(3, cust.getFirstName());
+            stmt.setString(4, cust.getLastName());
+            stmt.setString(5, cust.getMiddleInitial());
+            stmt.setLong(6, cust.getPhone());
+            stmt.setString(7, cust.getState());
+            stmt.setString(8, cust.getStreet());
+            stmt.setInt(9, cust.getZip());
+           
+           
             
             stmt.executeUpdate();
            
@@ -133,7 +135,7 @@ public class DaoImplementation implements DaoInterface {
                 cust.setCity(rs.getString("customer.city"));
                 cust.setState(rs.getString("customer.state"));
                 cust.setZip(rs.getInt("customer.zip"));
-                cust.setPhone(rs.getInt("customer.phone"));
+                cust.setPhone(rs.getLong("customer.phone"));
                 cust.setEmail(rs.getString("customer.email"));
             }
 
@@ -159,18 +161,18 @@ public class DaoImplementation implements DaoInterface {
         try {
             stmt = con.prepareStatement(consultAccounts);
             stmt.setLong(1, idCustom);
-            
             rs = stmt.executeQuery();
             
             while (rs.next()) {
+                
                 account = new Account();
-                account.setId(idCustom);
+                account.setId(rs.getLong("account.id"));
                 account.setDescription(rs.getString("account.description"));
                 account.setBalance(rs.getFloat("account.balance"));
                 account.setCreditLine(rs.getFloat("account.creditLine"));
                 account.setBeginBalance(rs.getFloat("account.beginBalance"));
                 account.setBeginBalanceTimestamp(rs.getTimestamp("account.beginBalanceTimestamp").toLocalDateTime());
-                account.setType(rs.getString("account.type"));
+                account.setType(rs.getInt("account.type"));
                 
                 acco.add(account);
             }
@@ -196,12 +198,12 @@ public class DaoImplementation implements DaoInterface {
         try {
             stmt = con.prepareStatement(createAccount,stmt.RETURN_GENERATED_KEYS);
             
-            stmt.setString(1, account.getDescription());
-            stmt.setFloat(2, account.getBalance());
-            stmt.setFloat(3, account.getCreditLine());
-            stmt.setFloat(4, account.getBeginBalance());
-            stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-            stmt.setString(6, account.getType().toString());
+            stmt.setFloat(1, account.getBalance());
+            stmt.setFloat(2, account.getBeginBalance());
+            stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            stmt.setFloat(4, account.getCreditLine());
+            stmt.setString(5, account.getDescription());
+            stmt.setInt(6, account.getType());
 
             stmt.executeUpdate();
             
@@ -265,7 +267,7 @@ public class DaoImplementation implements DaoInterface {
                 account.setCreditLine(rs.getFloat("account.creditLine"));
                 account.setBeginBalance(rs.getFloat("account.beginBalance"));
                 account.setBeginBalanceTimestamp(rs.getTimestamp("account.beginBalanceTimestamp").toLocalDateTime());
-                account.setType(rs.getString("account.type"));
+                account.setType(rs.getInt("account.type"));
                 
             }
 
@@ -279,7 +281,7 @@ public class DaoImplementation implements DaoInterface {
 
     @Override
     public void createMovement(Movement move) throws CreateException, UpdateException, ConnectException, DaoException {
-        ResultSet rs = null;
+        
         
         try {
             this.conectar();
@@ -289,11 +291,12 @@ public class DaoImplementation implements DaoInterface {
         try {
             stmt = con.prepareStatement(createMovement);
 
-            stmt.setLong(1, move.getIdAccount());
-            stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            stmt.setFloat(3, move.getAmount());
-            stmt.setFloat(4, move.getBalance());
-            stmt.setString(5, move.getDescription());
+
+            stmt.setFloat(1, move.getAmount());
+            stmt.setFloat(2, move.getBalance());
+            stmt.setString(3, move.getDescription());
+            stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            stmt.setLong(5, move.getIdAccount());
 
             stmt.executeUpdate();
           
@@ -304,6 +307,7 @@ public class DaoImplementation implements DaoInterface {
             stmt = con.prepareStatement(updateAccountBalance);
             stmt.setFloat(1,move.getBalance());
             stmt.setLong(2,move.getIdAccount());
+            stmt.executeUpdate();
         }catch (Exception ex){
             throw new UpdateException("Error al modificar");
         }
@@ -325,16 +329,18 @@ public class DaoImplementation implements DaoInterface {
             stmt.setLong(1, id);
             
             rs = stmt.executeQuery();
-            
+           
             while (rs.next()) {
                 move = new Movement();
-                move.setId(id);
-                move.setIdAccount(rs.getInt("movement.idAccount"));
+                move.setId(rs.getLong("movement.id"));
+                
+                move.setIdAccount(rs.getLong("movement.account_id"));
                 move.setTimestamp(rs.getTimestamp("movement.timestamp").toLocalDateTime());
                 move.setAmount(rs.getFloat("movement.amount"));
                 move.setBalance(rs.getFloat("movement.balance"));
                 move.setDescription(rs.getString("movement.description"));
                 movements.add(move);
+                
             }
 
         } catch (Exception e) {

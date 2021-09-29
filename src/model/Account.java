@@ -97,28 +97,28 @@ public class Account implements java.io.Serializable{
         this.beginBalanceTimestamp = beginBalanceTimestamp;
     }
 
-    public AccountType getType() {
-        return type;
+    public int getType() {
+        return type.ordinal();
     }
 
-    public void setType(String type) {
-        this.type = AccountType.valueOf(type);
+    public void setType(int type) {
+        this.type = AccountType.values()[type];
     }
 
 
     public void setData() {
-        char decision;
+        int decision;
         description = Util.introducirCadena("Introduce the description of the account");
         balance = Util.leerFloat("Introduce the balance of the account");
         creditLine = Util.leerFloat("Introduce teh credit line of the account");
         beginBalance = Util.leerFloat("Introduce the begin balance of the account");
         do {
-            decision = Util.leerChar("The account is standard or credit? (standard=s/credit=c) ");
-            if (decision != 's' && decision != 'c') {
+            decision = Util.leerInt("The account is standard or credit? (standard=0/credit=1) ");
+            if (decision != 0 && decision != 1) {
                 System.out.println("The account must be standard or credit");
             }
-        } while (decision != 's' && decision != 'c');
-        if (decision == 's') {
+        } while (decision != 0 && decision != 1);
+        if (decision == 0) {
             this.type = AccountType.standard;
         } else {
             this.type = AccountType.credit;
