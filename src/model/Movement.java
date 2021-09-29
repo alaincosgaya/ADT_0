@@ -95,7 +95,7 @@ public class Movement {
         System.out.println("Information about the movement");
         System.out.println("Id of the movement:" + this.id);
         System.out.println("Id of the account:" + this.idAccount);
-        System.out.println("Time stamp of the account:" + LocalDateTime.now());
+        System.out.println("Time stamp of the movement:" + LocalDateTime.now());
         System.out.println("Amount of the movement: " + this.amount);
         System.out.println("Balance of the movement:" + this.balance);
         System.out.println("Description of the movement:" + this.description);
