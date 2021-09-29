@@ -288,7 +288,7 @@ public class DaoImplementation implements DaoInterface {
         try {
             stmt = con.prepareStatement(createMovement);
 
-            stmt.setInt(1, move.getIdAccount());
+            stmt.setLong(1, move.getIdAccount());
             stmt.setDate(2, move.getTimestamp());
             stmt.setFloat(3, move.getAmount());
             stmt.setFloat(4, move.getBalance());
@@ -335,6 +335,11 @@ public class DaoImplementation implements DaoInterface {
         this.desconectar();
         
         return movements;
+    }
+
+    @Override
+    public Collection<Account> consultAccounts(Long idCustom) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    
