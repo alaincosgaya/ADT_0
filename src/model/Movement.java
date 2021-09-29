@@ -25,7 +25,7 @@ public class Movement {
         
     }
 
-    public Movement(int Id, long idAccount, Date timestamp, float amount, float balance, String description) {
+    public Movement(long Id, long idAccount, Date timestamp, float amount, float balance, String description) {
         this.Id = Id;
         this.idAccount = idAccount;
         this.timestamp = timestamp;
