@@ -5,29 +5,33 @@
  */
 package model;
 
-import java.sql.Date;
-
+import control.Util;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author idoia
+ * @author idoia y Alejandro
  */
-public class Account implements java.io.Serializable{
-    
+public class Account implements java.io.Serializable {
+
+    public enum AccountType {
+
+        standard, credit
+    }
+
     private long id;
     private String description;
     private float balance;
     private float creditLine;
     private float beginBalance;
-    private Date beginBalanceTimestamp;
+    private LocalDateTime beginBalanceTimestamp;
     private AccountType type;
-    private String data;
-    
-    public Account(){
-        
+
+    public Account() {
+
     }
 
-    public Account(long id, String description, float balance, float creditLine, float beginBalance, Date beginBalanceTimestamp, AccountType type) {
+    public Account(long id, String description, float balance, float creditLine, float beginBalance, LocalDateTime beginBalanceTimestamp, AccountType type) {
         this.id = id;
         this.description = description;
         this.balance = balance;
@@ -37,8 +41,6 @@ public class Account implements java.io.Serializable{
         this.type = type;
     }
 
-    
-    
     public long getId() {
         return id;
     }
@@ -79,11 +81,11 @@ public class Account implements java.io.Serializable{
         this.beginBalance = beginBalance;
     }
 
-    public Date getBeginBalanceTimestamp() {
+    public LocalDateTime getBeginBalanceTimestamp() {
         return beginBalanceTimestamp;
     }
 
-    public void setBeginBalanceTimestamp(Date beginBalanceTimestamp) {
+    public void setBeginBalanceTimestamp(LocalDateTime beginBalanceTimestamp) {
         this.beginBalanceTimestamp = beginBalanceTimestamp;
     }
 
@@ -95,12 +97,40 @@ public class Account implements java.io.Serializable{
         this.type = AccountType.valueOf(type);
     }
 
-    public String getData() {
-        return data;
+    public void setData() {
+        char decision;
+        description = Util.introducirCadena("Introduce the description of the account");
+        balance = Util.leerFloat("Introduce the balance of the account");
+        creditLine = Util.leerFloat("Introduce teh credit line of the account");
+        beginBalance = Util.leerFloat("Introduce the begin balance of the account");
+        do {
+            decision = Util.leerChar("The account is standard or credit? (standard=s/credit=c) ");
+            if (decision != 's' && decision != 'c') {
+                System.out.println("The account must be standard or credit");
+            }
+        } while (decision != 's' && decision != 'c');
+        if (decision == 's') {
+            this.type = AccountType.standard;
+        } else {
+            this.type = AccountType.credit;
+        }
+
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void getData() {
+        System.out.println("Information about the account");
+        System.out.println("Id of the account: " + this.id);
+        System.out.println("Description of the account: " + this.description);
+        System.out.println("Balance of the account: " + this.balance);
+        System.out.println("Credit line of the account: " + this.creditLine);
+        System.out.println("Begin balance of the account: " + this.beginBalance);
+        System.out.println("Begin balance time stamp of the account: " + LocalDateTime.now());
+        if (this.type == AccountType.standard) {
+            System.out.println("Standard: " + this.type);
+        }
+        if (this.type == AccountType.credit) {
+            System.out.println("Credit: " + this.type);
+        }
     }
 
     @Override
@@ -108,6 +138,4 @@ public class Account implements java.io.Serializable{
         return "Account{" + "id=" + id + ", description=" + description + ", balance=" + balance + ", creditLine=" + creditLine + ", beginBalance=" + beginBalance + ", beginBalanceTimestamp=" + beginBalanceTimestamp + ", type=" + type + '}';
     }
 
-    
-    
 }

@@ -20,7 +20,6 @@ public class Customer {
     private int zip;
     private int phone;
     private String email;
-    private String data;
     
     public Customer(){
         
@@ -119,17 +118,19 @@ public class Customer {
         this.email = email;
     }
 
-    public String getData() {
-        return data;
-    }
+ 
 
-    public void setData(String data) {
-        this.data = data;
+    public void setData() {
+        
     }
 
     @Override
     public String toString() {
         return "Customer{" + "Id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", street=" + street + ", city=" + city + ", state=" + state + ", zip=" + zip + ", phone=" + phone + ", email=" + email + '}';
+    }
+
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

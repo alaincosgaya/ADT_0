@@ -5,29 +5,30 @@
  */
 package model;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Real;
-import java.sql.Date;
+import control.Util;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author idoia
+ * @author idoia y Alejandro
  */
 public class Movement {
-    private long Id;
+
+    private long id;
     private long idAccount;
-    //private DatabaseDate timestamp;
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private float amount;
     private float balance;
     private String description;
-    private String data;
+
+    ;
     
-    public Movement(){
-        
+    public Movement() {
+
     }
 
-    public Movement(long Id, long idAccount, Date timestamp, float amount, float balance, String description) {
-        this.Id = Id;
+    public Movement(long id, long idAccount, LocalDateTime timestamp, float amount, float balance, String description) {
+        this.id = id;
         this.idAccount = idAccount;
         this.timestamp = timestamp;
         this.amount = amount;
@@ -36,12 +37,12 @@ public class Movement {
     }
 
     public long getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(long Id) {
-        this.Id = Id;
-    }
+    public void setId(long id) {
+        this.id = id;
+    
 
     public long getIdAccount() {
         return idAccount;
@@ -51,11 +52,11 @@ public class Movement {
         this.idAccount = idAccount;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -82,20 +83,27 @@ public class Movement {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    public String getData() {
-        return data;
+
+    public void setData() {
+        idAccount = Util.leerLong("Introduce the id of the account that you will want to do the movement");
+        amount = Util.leerFloat("Itroduce the amount of the movement");
+        balance = Util.leerFloat("Introduce the balance of the movement");
+        description = Util.introducirCadena("Introduce the description of the movement");
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void getData() {
+        System.out.println("Information about the movement");
+        System.out.println("Id of the movement:" + this.id);
+        System.out.println("Id of the account:" + this.idAccount);
+        System.out.println("Time stamp of the account:" + LocalDateTime.now());
+        System.out.println("Amount of the movement: " + this.amount);
+        System.out.println("Balance of the movement:" + this.balance);
+        System.out.println("Description of the movement:" + this.description);
     }
-    
 
     @Override
     public String toString() {
-        return "Movement{" + "Id=" + Id + ", idAccount=" + idAccount + ", timestamp=" + timestamp + ", amount=" + amount + ", balance=" + balance + ", description=" + description + '}';
+        return "Movement{" + "Id=" + id + ", idAccount=" + idAccount + ", timestamp=" + timestamp + ", amount=" + amount + ", balance=" + balance + ", description=" + description + '}';
     }
-    
-    
+
 }
