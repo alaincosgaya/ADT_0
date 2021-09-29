@@ -15,7 +15,7 @@ import java.sql.Date;
  */
 public class Account implements java.io.Serializable{
     
-    private int id;
+    private long id;
     private String description;
     private float balance;
     private float creditLine;
@@ -28,7 +28,7 @@ public class Account implements java.io.Serializable{
         
     }
 
-    public Account(int id, String description, float balance, float creditLine, float beginBalance, Date beginBalanceTimestamp, AccountType type) {
+    public Account(long id, String description, float balance, float creditLine, float beginBalance, Date beginBalanceTimestamp, AccountType type) {
         this.id = id;
         this.description = description;
         this.balance = balance;
@@ -40,11 +40,11 @@ public class Account implements java.io.Serializable{
 
     
     
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

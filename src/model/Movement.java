@@ -13,8 +13,8 @@ import java.sql.Date;
  * @author idoia
  */
 public class Movement {
-    private int Id;
-    private int idAccount;
+    private long Id;
+    private long idAccount;
     //private DatabaseDate timestamp;
     private Date timestamp;
     private float amount;
@@ -25,7 +25,7 @@ public class Movement {
         
     }
 
-    public Movement(int Id, int idAccount, Date timestamp, float amount, float balance, String description) {
+    public Movement(int Id, long idAccount, Date timestamp, float amount, float balance, String description) {
         this.Id = Id;
         this.idAccount = idAccount;
         this.timestamp = timestamp;
@@ -34,7 +34,7 @@ public class Movement {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 
@@ -42,11 +42,11 @@ public class Movement {
         this.Id = Id;
     }
 
-    public int getIdAccount() {
+    public long getIdAccount() {
         return idAccount;
     }
 
-    public void setIdAccount(int idAccount) {
+    public void setIdAccount(long idAccount) {
         this.idAccount = idAccount;
     }
 

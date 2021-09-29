@@ -10,7 +10,7 @@ package model;
  * @author idoia
  */
 public class Customer {
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private String middleInitial;
@@ -25,7 +25,7 @@ public class Customer {
         
     }
 
-    public Customer(int id, String firstName, String lastName, String middleInitial, String street, String city, String state, int zip, int phone, String email) {
+    public Customer(long id, String firstName, String lastName, String middleInitial, String street, String city, String state, int zip, int phone, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,11 +38,11 @@ public class Customer {
         this.email = email;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int Id) {
+    public void setId(long Id) {
         this.id = Id;
     }
 

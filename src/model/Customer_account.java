@@ -10,8 +10,8 @@ package model;
  * @author 2dam
  */
 public class Customer_account {
-    private int idCustom;
-    private int idAccount;
+    private long idCustom;
+    private long idAccount;
     
     public Customer_account(){
         
@@ -22,7 +22,7 @@ public class Customer_account {
         this.idAccount = idAccount;
     }
 
-    public int getIdCustom() {
+    public long getIdCustom() {
         return idCustom;
     }
 
@@ -30,7 +30,7 @@ public class Customer_account {
         this.idCustom = idCustom;
     }
 
-    public int getIdAccount() {
+    public long getIdAccount() {
         return idAccount;
     }
 
