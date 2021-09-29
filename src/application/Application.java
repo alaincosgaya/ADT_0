@@ -3,7 +3,7 @@
  */
 package application;
 
-import control.Util;
+import control.*;
 import java.util.Collection;
 import model.*;
 
@@ -23,11 +23,12 @@ public class Application {
          * Menu en el cual el usuario podrá elegir la opción que desee
          * @see menuPrincipal();
          */
-        menuPrincipal();
+       DaoInterface data = new DaoImplementation();
+        menuPrincipal(data);
     }
     
 
-    private static void menuPrincipal() {
+    private static void menuPrincipal(DaoInterface data) {
         
         int opcMenu;
         
@@ -51,56 +52,57 @@ public class Application {
                      * Metodo destinado a la creacion de un nuevo cliente
                      * @see createCustomer();
                      */
-                    createCustomer();
+                    createCustomer(data);
                     break;
                 case 2:
                     /**
                      * Metodo destinado a la consulta de la informacion de un cliente
                      * @see consultCustomerData();
                      */
-                    consultCustomerData();
+                    consultCustomerData(data);
                     break;
                 case 3:
                     /**
                      * Metodo que permite consultar las cuentas de un cliente en cuestion
                      * @see ConsultClientAccounts();
                      */
-                    ConsultClientAccounts();
+                    ConsultClientAccounts(data);
                     break;
                 case 4:
                     /**
                      * Metodo que permite Crear una cuenta a un cliente
                      * @see createCustomerAccount();
                      */
-                    createCustomerAccount();
+                    createCustomerAccount(data);
                     break;
                 case 5:
                     /**
                      * Metodo que permite añadir a un cliente a una cuenta
                      * @see AddCustomerToAccount();
                      */
-                    AddCustomerToAccount();
+
+                    AddCustomerToAccount(data);
                     break;
                 case 6:
                     /**
                      * Metodo el cual permite consultar los detalles de una cuenta en cuestion
                      * @see consultAccountDetails();
                      */
-                    consultAccountDetails();
+                    consultAccountDetails(data);
                     break;
                 case 7:
                     /**
                      * Metodo que permite hacer un movimiento sobre una cuenta
                      * @see makeMovement();
                      */
-                    makeMovement();
+                    makeMovement(data);
                     break;
                 case 8:
                     /**
                      * Metodo que permite consultar los movimientos sobre una cuenta
                      * @see consultAccountMovements();
                      */
-                    consultAccountMovements();
+                    consultAccountMovements(data);
                     break;
                 case 9:
                     System.out.println("Fin de la ejecucion");
@@ -112,25 +114,20 @@ public class Application {
         }while (opcMenu != 9);
     }
 
-    private static void createCustomer() {
+    private static void createCustomer(DaoInterface data) {
         Customer cus;
-        int id_cus;
-        id_cus=Util.leerInt("Introduce la id del cliente: ");
-        cus = consultCustomer(id_cus);
-        if(cus == null){
-            cus = new Customer();
-            cus.setData(id_cus);
-            createCustomer(cus);
-        }else{
-            System.out.println("La id introducida corresponde ya a un cliente");
-        }
+        Long id_cus;
+        cus = new Customer();
+        cus.setData();
+        id_cus = data.createCustomer(cus);
+        System.out.println("La id de cliente que se te ha asignado es: "+id_cus);
     }
 
-    private static void consultCustomerData() {
+    private static void consultCustomerData(DaoInterface data) {
         Customer cus;
-        int id_cus;
-        id_cus=Util.leerInt("Introduce la id del cliente: ");
-        cus = consultCustomer(id_cus);
+        Long id_cus;
+        id_cus=Util.leerLong("Introduce la id del cliente: ");
+        cus = data.consultCustomer(id_cus);
         if(cus != null){
             cus.getData();
         }else{
@@ -139,15 +136,15 @@ public class Application {
         }
     }
 
-    private static void ConsultClientAccounts() {
+    private static void ConsultClientAccounts(DaoInterface data) {
         Customer cus;
         Collection<Account> accounts;
-        int id_cus;
-        id_cus=Util.leerInt("Introduce la id del cliente: ");
-        cus = consultCustomer(id_cus);
+        Long id_cus;
+        id_cus=Util.leerLong("Introduce la id del cliente: ");
+        cus = data.consultCustomer(id_cus);
         
         if(cus != null){
-            accounts = consultAccounts(id_cus);
+            accounts = data.consultAccounts(id_cus);
             for(Account acc : accounts){
                 acc.getData();
             }
@@ -156,16 +153,16 @@ public class Application {
         }
     }
 
-    private static void createCustomerAccount() {
+    private static void createCustomerAccount(DaoInterface data) {
         Customer cus;
         Account acc;
-        int id_cus,id_acc;
-        id_cus=Util.leerInt("Introduce la id del cliente: ");
-        cus = consultCustomer(id_cus);
+        Long id_cus,id_acc;
+        id_cus=Util.leerLong("Introduce la id del cliente: ");
+        cus = data.consultCustomer(id_cus);
         if(cus != null){
             acc = new Account();
             acc.setData();
-            id_acc = createAccount(id_cus,acc);
+            id_acc = data.createAccount(id_cus,acc);
             System.out.println("La id de la cuenta creada es: "+id_acc);
             
            
@@ -174,17 +171,17 @@ public class Application {
         }
     }
 
-    private static void AddCustomerToAccount() {
+    private static void AddCustomerToAccount(DaoInterface data) {
         Customer cus;
         Account acc;
-        int id_cus,id_acc;
-        id_cus=Util.leerInt("Introduce la id del cliente: ");
-        cus = consultCustomer(id_cus);
+        Long id_cus,id_acc;
+        id_cus=Util.leerLong("Introduce la id del cliente:");
+        cus = data.consultCustomer(id_cus);
         if(cus != null){
-            id_acc=Util.leerInt("Introduce la id de la cuenta:");
-            acc = consultAccount(id_acc);
+            id_acc=Util.leerLong("Introduce la id de la cuenta:");
+            acc = data.consultDataAccount(id_acc);
             if(acc != null){
-                createCustomerAccount(id_cus,acc);
+                data.createCustomerAccount(id_cus,id_acc);
                 System.out.println("Se agrego el cliente a la cuenta");
             }else{
                 System.out.println("La id introducida no corresponde a ninguna cuenta");
@@ -194,11 +191,11 @@ public class Application {
         }
     }
 
-    private static void consultAccountDetails() {
+    private static void consultAccountDetails(DaoInterface data) {
         Account acc;
-        int id_acc;
-        id_acc = Util.leerInt("Introduce la id de la cuenta:");
-          acc = consultAccount(id_acc);
+        Long id_acc;
+        id_acc = Util.leerLong("Introduce la id de la cuenta:");
+          acc = data.consultDataAccount(id_acc);
            if(acc != null){
                acc.getData();
            } else{
@@ -206,18 +203,19 @@ public class Application {
             }
     }
 
-    private static void makeMovement() {
+    private static void makeMovement(DaoInterface data) {
         Movement mov;
-        int id_mov;
+        Long id_mov;
     }
 
-    private static void consultAccountMovements() {
-        int id_acc;
+    private static void consultAccountMovements(DaoInterface data) {
+        Long id_acc;
+        Account acc;
         Collection<Movement> movements;
-        id_acc = Util.leerInt("Introduce la id de la cuenta:");
-            acc = consultAccount(id_acc);
+        id_acc = Util.leerLong("Introduce la id de la cuenta:");
+            acc = data.consultDataAccount(id_acc);
             if(acc != null){
-                movements = consultMovements(id_acc);
+                movements = data.consultMovements(id_acc);
                 for(Movement mov : movements){
                     mov.getData();
                 }

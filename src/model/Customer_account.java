@@ -12,4 +12,36 @@ package model;
 public class Customer_account {
     private int idCustom;
     private int idAccount;
+    
+    public Customer_account(){
+        
+    }
+
+    public Customer_account(int idCustom, int idAccount) {
+        this.idCustom = idCustom;
+        this.idAccount = idAccount;
+    }
+
+    public int getIdCustom() {
+        return idCustom;
+    }
+
+    public void setIdCustom(int idCustom) {
+        this.idCustom = idCustom;
+    }
+
+    public int getIdAccount() {
+        return idAccount;
+    }
+
+    public void setIdAccount(int idAccount) {
+        this.idAccount = idAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer_account{" + "idCustom=" + idCustom + ", idAccount=" + idAccount + '}';
+    }
+    
+    
 }

@@ -3,16 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package control;
 
-import model.Customer;
+import java.util.*;
+import model.*;
 
 /**
  *
- * @author 2dam
+ * @author Idoia Ormaetxea
  */
 public interface DaoInterface {
-   public void createCustomer(Customer cust,int Id,String firstName,
-    String lastName,String middleInitial,String street,String city,
-    String state,int zip,int phone,String email)throws Exception;
+   public Long createCustomer(Customer cust)throws Exception;
+   public Customer consultCustomer(Long id)throws Exception;
+   public Collection<Account> consultAccounts(int idCustom)throws Exception;
+   public Long createAccount(Long id, Account account)throws Exception;
+   public void createCustomerAccount(Long id, Long id_acc)throws Exception;
+   public Account consultDataAccount(Long id)throws Exception;
+   public void createMovement(Movement move)throws Exception;
+   public Collection<Movement> consultMovement(Long id)throws Exception;
 }
