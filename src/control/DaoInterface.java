@@ -16,7 +16,7 @@ import model.*;
 public interface DaoInterface {
    public Long createCustomer(Customer cust)throws Exception;
    public Customer consultCustomer(Long id)throws Exception;
-   public Collection<Account> consultAccounts(int idCustom)throws Exception;
+   public Collection<Account> consultAccounts(Long idCustom)throws Exception;
    public Long createAccount(Long id, Account account)throws Exception;
    public void createCustomerAccount(Long id, Long id_acc)throws Exception;
    public Account consultDataAccount(Long id)throws Exception;

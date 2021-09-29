@@ -13,19 +13,20 @@ import java.sql.Date;
  * @author idoia
  */
 public class Movement {
-    private int Id;
-    private int idAccount;
+    private long Id;
+    private long idAccount;
     //private DatabaseDate timestamp;
     private Date timestamp;
     private float amount;
     private float balance;
     private String description;
+
     
     public Movement(){
         
     }
 
-    public Movement(int Id, int idAccount, Date timestamp, float amount, float balance, String description) {
+    public Movement(long Id, long idAccount, Date timestamp, float amount, float balance, String description) {
         this.Id = Id;
         this.idAccount = idAccount;
         this.timestamp = timestamp;
@@ -34,19 +35,19 @@ public class Movement {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 
-    public void setId(int Id) {
+    public void setId(long Id) {
         this.Id = Id;
     }
 
-    public int getIdAccount() {
+    public long getIdAccount() {
         return idAccount;
     }
 
-    public void setIdAccount(int idAccount) {
+    public void setIdAccount(long idAccount) {
         this.idAccount = idAccount;
     }
 
@@ -81,6 +82,9 @@ public class Movement {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+
+    
 
     @Override
     public String toString() {

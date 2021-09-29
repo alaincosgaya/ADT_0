@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +9,7 @@ package control;
 import exception.*;
 import java.net.ConnectException;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -143,7 +145,7 @@ public class DaoImplementation implements DaoInterface {
     }
 
     @Override
-    public Collection<Account> consultAccounts(int idCustom) throws ReadException, ConnectException, DaoException {
+    public Collection<Account> consultAccounts(Long idCustom) throws ReadException, ConnectException, DaoException {
         
         Account account = null;
         Collection<Account> acco =  new ArrayList<>();
@@ -155,7 +157,7 @@ public class DaoImplementation implements DaoInterface {
         }
         try {
             stmt = con.prepareStatement(consultAccounts);
-            stmt.setInt(1, idCustom);
+            stmt.setLong(1, idCustom);
             
             rs = stmt.executeQuery();
             
@@ -166,7 +168,7 @@ public class DaoImplementation implements DaoInterface {
                 account.setBalance(rs.getFloat("account.balance"));
                 account.setCreditLine(rs.getFloat("account.creditLine"));
                 account.setBeginBalance(rs.getFloat("account.beginBalance"));
-                account.setBeginBalanceTimestamp(rs.getDate("account.beginBalanceTimestamp"));
+                account.setBeginBalanceTimestamp(rs.getTimestamp("account.beginBalanceTimestamp").toLocalDateTime());
                 account.setType(rs.getString("account.type"));
                 
                 acco.add(account);
@@ -197,16 +199,12 @@ public class DaoImplementation implements DaoInterface {
             stmt.setFloat(2, account.getBalance());
             stmt.setFloat(3, account.getCreditLine());
             stmt.setFloat(4, account.getBeginBalance());
-            stmt.setDate(5, account.getBeginBalanceTimestamp());
+            stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setString(6, account.getType().toString());
 
             stmt.executeUpdate();
             
-            //stmt = con.prepareStatement(createCustomerAccount);
-            //stmt.setInt(1, account.getId());
-            //stmt.setInt(2, id);
-            
-            //stmt.executeUpdate();
+          
             rs=stmt.getGeneratedKeys();
             if(rs.next()){
                 id_acc=rs.getLong(1);
@@ -265,7 +263,7 @@ public class DaoImplementation implements DaoInterface {
                 account.setBalance(rs.getFloat("account.balance"));
                 account.setCreditLine(rs.getFloat("account.creditLine"));
                 account.setBeginBalance(rs.getFloat("account.beginBalance"));
-                account.setBeginBalanceTimestamp(rs.getDate("account.beginBalanceTimestamp"));
+                account.setBeginBalanceTimestamp(rs.getTimestamp("account.beginBalanceTimestamp").toLocalDateTime());
                 account.setType(rs.getString("account.type"));
                 
             }

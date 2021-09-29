@@ -5,8 +5,9 @@
  */
 package model;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Real;
-import java.sql.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 /**
@@ -15,20 +16,20 @@ import java.sql.Date;
  */
 public class Account implements java.io.Serializable{
     
-    private int id;
+    private long id;
     private String description;
     private float balance;
     private float creditLine;
     private float beginBalance;
-    //private DatabaseDate beginBalanceTimestamp;
-    private Date beginBalanceTimestamp;
+    private LocalDateTime beginBalanceTimestamp;
     private AccountType type;
+   
     
     public Account(){
         
     }
 
-    public Account(int id, String description, float balance, float creditLine, float beginBalance, Date beginBalanceTimestamp, AccountType type) {
+    public Account(long id, String description, float balance, float creditLine, float beginBalance, LocalDateTime beginBalanceTimestamp, AccountType type) {
         this.id = id;
         this.description = description;
         this.balance = balance;
@@ -40,11 +41,11 @@ public class Account implements java.io.Serializable{
 
     
     
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -80,11 +81,11 @@ public class Account implements java.io.Serializable{
         this.beginBalance = beginBalance;
     }
 
-    public Date getBeginBalanceTimestamp() {
+    public LocalDateTime getBeginBalanceTimestamp() {
         return beginBalanceTimestamp;
     }
 
-    public void setBeginBalanceTimestamp(Date beginBalanceTimestamp) {
+    public void setBeginBalanceTimestamp(LocalDateTime beginBalanceTimestamp) {
         this.beginBalanceTimestamp = beginBalanceTimestamp;
     }
 
@@ -95,6 +96,7 @@ public class Account implements java.io.Serializable{
     public void setType(String type) {
         this.type = AccountType.valueOf(type);
     }
+
 
     @Override
     public String toString() {
