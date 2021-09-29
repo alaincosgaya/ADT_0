@@ -10,7 +10,7 @@ import model.*;
 
 /**
  *
- * @author Jonathan
+ * @author Alain, Jonathan
  */
 public class Application {
 

@@ -5,6 +5,8 @@
  */
 package model;
 
+import control.Util;
+
 /**
  *
  * @author idoia
@@ -20,7 +22,6 @@ public class Customer {
     private int zip;
     private int phone;
     private String email;
-
     
     public Customer(){
         
@@ -120,6 +121,33 @@ public class Customer {
     }
 
 
+    public void setData(){
+        firstName = Util.introducirCadena("Introduce your first name");
+        lastName = Util.introducirCadena("Introduce your last name");
+        middleInitial = Util.introducirCadena("Introduce your middle initial (ex: S.)");
+        street = Util.introducirCadena("Introduce your street");
+        city = Util.introducirCadena("Introduce your city");
+        state = Util.introducirCadena("Introduce teh state");
+        zip = Util.leerInt("Introduce the zip");
+        phone = Util.leerInt("Introduce your phone number");
+        email = Util.introducirCadena("Introduce your email");
+    }
+    
+        public void getData(){
+        
+            System.out.println("Id: "+this.id);
+            System.out.println("First name: "+this.firstName);
+            System.out.println("Last Name: "+this.lastName);
+            System.out.println("Middle Initial: "+this.middleInitial);
+            System.out.println("Street: "+this.street);
+            System.out.println("City: "+this.city);
+            System.out.println("State: "+this.state);
+            System.out.println("Zip: "+this.zip);
+            System.out.println("Phone: "+this.phone);
+            System.out.println("Email: "+this.email);
+    }
+
+    
 
     @Override
     public String toString() {

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,7 +7,8 @@
 package model;
 
 
-import java.time.LocalDate;
+
+import control.Util;
 import java.time.LocalDateTime;
 
 
@@ -25,6 +27,12 @@ public class Account implements java.io.Serializable{
     private AccountType type;
    
     
+
+    public enum AccountType {
+
+        standard, credit
+    }
+
     public Account(){
         
     }
@@ -98,10 +106,45 @@ public class Account implements java.io.Serializable{
     }
 
 
-    @Override
-    public String toString() {
-        return "Account{" + "id=" + id + ", description=" + description + ", balance=" + balance + ", creditLine=" + creditLine + ", beginBalance=" + beginBalance + ", beginBalanceTimestamp=" + beginBalanceTimestamp + ", type=" + type + '}';
+    public void setData() {
+        char decision;
+        description = Util.introducirCadena("Introduce the description of the account");
+        balance = Util.leerFloat("Introduce the balance of the account");
+        creditLine = Util.leerFloat("Introduce teh credit line of the account");
+        beginBalance = Util.leerFloat("Introduce the begin balance of the account");
+        do {
+            decision = Util.leerChar("The account is standard or credit? (standard=s/credit=c) ");
+            if (decision != 's' && decision != 'c') {
+                System.out.println("The account must be standard or credit");
+            }
+        } while (decision != 's' && decision != 'c');
+        if (decision == 's') {
+            this.type = AccountType.standard;
+        } else {
+            this.type = AccountType.credit;
+        }
+        
+
     }
+    
+
+    public void getData() {
+        System.out.println("Information about the account");
+        System.out.println("Id of the account: " + this.id);
+        System.out.println("Description of the account: " + this.description);
+        System.out.println("Balance of the account: " + this.balance);
+        System.out.println("Credit line of the account: " + this.creditLine);
+        System.out.println("Begin balance of the account: " + this.beginBalance);
+        System.out.println("Begin balance time stamp of the account: " + LocalDateTime.now());
+        if (this.type == AccountType.standard) {
+            System.out.println("Standard: " + this.type);
+        }
+        if (this.type == AccountType.credit) {
+            System.out.println("Credit: " + this.type);
+        }
+    }
+
+
 
     
     

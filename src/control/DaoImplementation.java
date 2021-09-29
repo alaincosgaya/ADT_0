@@ -63,13 +63,13 @@ public class DaoImplementation implements DaoInterface {
         }
     }
 
-    private final String createCustomer = "INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private final String createCustomer = "INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?)";
     private final String consultCustomer = "SELECT customer.* FROM customer WHERE customer.id = ?";
     private final String consultAccounts = "SELECT account.* FROM customer_account, account WHERE customer_account.customers_id = ? AND customer_account.accounts_id = account.id";
-    private final String createAccount = "INSERT INTO account VALUES (?,?,?,?,?,?,?)";
+    private final String createAccount = "INSERT INTO account VALUES (?,?,?,?,?,?)";
     private final String createCustomerAccount = "INSERT INTO customer_account VALUES (?,?)";
     private final String consultDataAccount = "SELECT account.* FROM account WHERE account.id = ?";
-    private final String createMovement = "INSERT INTO movement VALUES (?,?,?,?,?,?)";
+    private final String createMovement = "INSERT INTO movement VALUES (?,?,?,?,?)";
     private final String consultMovement = "SELECT movement.* FROM account, movement WHERE movement.account_id = account.id AND account.id = ?";
     private final String updateAccountBalance = "UPDATE account SET account.balance = account.balance + ? WHERE account.id = ?";
 
@@ -94,8 +94,9 @@ public class DaoImplementation implements DaoInterface {
             stmt.setInt(7, cust.getZip());
             stmt.setInt(8, cust.getPhone());
             stmt.setString(9, cust.getEmail());
-
+            
             stmt.executeUpdate();
+           
             rs=stmt.getGeneratedKeys();
             if(rs.next()){
                 id_cus=rs.getLong(1);
@@ -289,7 +290,7 @@ public class DaoImplementation implements DaoInterface {
             stmt = con.prepareStatement(createMovement);
 
             stmt.setLong(1, move.getIdAccount());
-            stmt.setDate(2, move.getTimestamp());
+            stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setFloat(3, move.getAmount());
             stmt.setFloat(4, move.getBalance());
             stmt.setString(5, move.getDescription());
@@ -329,7 +330,7 @@ public class DaoImplementation implements DaoInterface {
                 move = new Movement();
                 move.setId(id);
                 move.setIdAccount(rs.getInt("movement.idAccount"));
-                move.setTimestamp(rs.getDate("movement.timestamp"));
+                move.setTimestamp(rs.getTimestamp("movement.timestamp").toLocalDateTime());
                 move.setAmount(rs.getFloat("movement.amount"));
                 move.setBalance(rs.getFloat("movement.balance"));
                 move.setDescription(rs.getString("movement.description"));
