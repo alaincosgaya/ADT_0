@@ -72,36 +72,41 @@ public class DaoImplementation implements DaoInterface {
 
 
     @Override
-    public void createCustomer(Customer cust) throws CreateException, ConnectException, DaoException {
+    public Long createCustomer(Customer cust) throws CreateException, ConnectException, DaoException {
+        Long id_cus=null;
+        ResultSet rs =null;
         try {
             this.conectar();
         } catch (DaoException e1) {
             throw new ConnectException(e1.getMessage());
         }
         try {
-            stmt = con.prepareStatement(createCustomer);
-            stmt.setInt(1, cust.getId());
-            stmt.setString(2, cust.getFirstName());
-            stmt.setString(3, cust.getLastName());
-            stmt.setString(4, cust.getMiddleInitial());
-            stmt.setString(5, cust.getStreet());
-            stmt.setString(6, cust.getCity());
-            stmt.setString(7, cust.getState());
-            stmt.setInt(8, cust.getZip());
-            stmt.setInt(9, cust.getPhone());
-            stmt.setString(10, cust.getEmail());
+            stmt = con.prepareStatement(createCustomer,stmt.RETURN_GENERATED_KEYS);
+            
+            stmt.setString(1, cust.getFirstName());
+            stmt.setString(2, cust.getLastName());
+            stmt.setString(3, cust.getMiddleInitial());
+            stmt.setString(4, cust.getStreet());
+            stmt.setString(5, cust.getCity());
+            stmt.setString(6, cust.getState());
+            stmt.setInt(7, cust.getZip());
+            stmt.setInt(8, cust.getPhone());
+            stmt.setString(9, cust.getEmail());
 
             stmt.executeUpdate();
-
+            rs=stmt.getGeneratedKeys();
+            if(rs.next()){
+                id_cus=rs.getLong(1);
+            }
         } catch (Exception e) {
             throw new CreateException("Error al Crear");
         }
         this.desconectar();
-
+        return id_cus;
     }
 
     @Override
-    public Customer consultCustomer(int id) throws CreateException, ConnectException, DaoException {
+    public Customer consultCustomer(Long id) throws CreateException, ConnectException, DaoException {
         Customer cust = null;
         ResultSet rs = null;
         try {
@@ -111,7 +116,7 @@ public class DaoImplementation implements DaoInterface {
         }
         try {
             stmt = con.prepareStatement(consultCustomer);
-            stmt.setInt(1, id);
+            stmt.setLong(1, id);
             
             rs = stmt.executeQuery();
             
@@ -177,22 +182,23 @@ public class DaoImplementation implements DaoInterface {
     }
 
     @Override
-    public void createAccount(int id, Account account) throws CreateException, ConnectException, DaoException {
-        
+    public Long createAccount(Long id, Account account) throws CreateException, ConnectException, DaoException {
+        Long id_acc = null;
+        ResultSet rs = null;
         try {
             this.conectar();
         } catch (DaoException e1) {
             throw new ConnectException(e1.getMessage());
         }
         try {
-            stmt = con.prepareStatement(createAccount);
-            stmt.setInt(1, account.getId());
-            stmt.setString(2, account.getDescription());
-            stmt.setFloat(3, account.getBalance());
-            stmt.setFloat(4, account.getCreditLine());
-            stmt.setFloat(5, account.getBeginBalance());
-            stmt.setDate(6, account.getBeginBalanceTimestamp());
-            stmt.setString(7, account.getType().toString());
+            stmt = con.prepareStatement(createAccount,stmt.RETURN_GENERATED_KEYS);
+            
+            stmt.setString(1, account.getDescription());
+            stmt.setFloat(2, account.getBalance());
+            stmt.setFloat(3, account.getCreditLine());
+            stmt.setFloat(4, account.getBeginBalance());
+            stmt.setDate(5, account.getBeginBalanceTimestamp());
+            stmt.setString(6, account.getType().toString());
 
             stmt.executeUpdate();
             
@@ -201,17 +207,21 @@ public class DaoImplementation implements DaoInterface {
             //stmt.setInt(2, id);
             
             //stmt.executeUpdate();
-
+            rs=stmt.getGeneratedKeys();
+            if(rs.next()){
+                id_acc=rs.getLong(1);
+            }
         } catch (Exception e) {
             throw new CreateException("Error al Crear");
         }
         this.desconectar();
         
-        createCustomerAccount(id, account);
+        createCustomerAccount(id, id_acc);
+        return id_acc;
     }
     
     @Override
-    public void createCustomerAccount(int id, Account account) throws CreateException, ConnectException, DaoException {
+    public void createCustomerAccount(Long id, Long id_acc) throws CreateException, ConnectException, DaoException {
         
         try {
             this.conectar();
@@ -220,8 +230,8 @@ public class DaoImplementation implements DaoInterface {
         }
         try {
             stmt = con.prepareStatement(createCustomerAccount);
-            stmt.setInt(1, id);
-            stmt.setInt(2, account.getId());
+            stmt.setLong(1, id);
+            stmt.setLong(2, id_acc);
             
             
             stmt.executeUpdate();
@@ -233,7 +243,7 @@ public class DaoImplementation implements DaoInterface {
     }
 
     @Override
-    public Account consultDataAccount(int id) throws CreateException, ConnectException, DaoException {
+    public Account consultDataAccount(Long id) throws CreateException, ConnectException, DaoException {
         
         Account account = null;
         ResultSet rs = null;
@@ -244,7 +254,7 @@ public class DaoImplementation implements DaoInterface {
         }
         try {
             stmt = con.prepareStatement(consultDataAccount);
-            stmt.setInt(1, id);
+            stmt.setLong(1, id);
             
             rs = stmt.executeQuery();
             
@@ -277,12 +287,12 @@ public class DaoImplementation implements DaoInterface {
         }
         try {
             stmt = con.prepareStatement(createMovement);
-            stmt.setInt(1, move.getId());
-            stmt.setInt(2, move.getIdAccount());
-            stmt.setDate(3, move.getTimestamp());
-            stmt.setFloat(4, move.getAmount());
-            stmt.setFloat(5, move.getBalance());
-            stmt.setString(6, move.getDescription());
+
+            stmt.setLong(1, move.getIdAccount());
+            stmt.setDate(2, move.getTimestamp());
+            stmt.setFloat(3, move.getAmount());
+            stmt.setFloat(4, move.getBalance());
+            stmt.setString(5, move.getDescription());
 
             stmt.executeUpdate();
 
@@ -293,8 +303,9 @@ public class DaoImplementation implements DaoInterface {
     }
 
     @Override
-    public Movement consultMovement(int id) throws CreateException, ConnectException, DaoException {
+    public Collection<Movement> consultMovement(Long id) throws CreateException, ConnectException, DaoException {
         Movement move = null;
+        Collection<Movement> movements = new ArrayList<>();
         ResultSet rs = null;
         try {
             this.conectar();
@@ -303,7 +314,7 @@ public class DaoImplementation implements DaoInterface {
         }
         try {
             stmt = con.prepareStatement(consultMovement);
-            stmt.setInt(1, id);
+            stmt.setLong(1, id);
             
             rs = stmt.executeQuery();
             
@@ -315,7 +326,7 @@ public class DaoImplementation implements DaoInterface {
                 move.setAmount(rs.getFloat("movement.amount"));
                 move.setBalance(rs.getFloat("movement.balance"));
                 move.setDescription(rs.getString("movement.description"));
-                
+                movements.add(move);
             }
 
         } catch (Exception e) {
@@ -323,7 +334,12 @@ public class DaoImplementation implements DaoInterface {
         }
         this.desconectar();
         
-        return move;
+        return movements;
+    }
+
+    @Override
+    public Collection<Account> consultAccounts(Long idCustom) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    

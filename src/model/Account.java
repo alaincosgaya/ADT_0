@@ -5,7 +5,6 @@
  */
 package model;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Real;
 import java.sql.Date;
 
 
@@ -20,7 +19,6 @@ public class Account implements java.io.Serializable{
     private float balance;
     private float creditLine;
     private float beginBalance;
-    //private DatabaseDate beginBalanceTimestamp;
     private Date beginBalanceTimestamp;
     private AccountType type;
     
@@ -95,6 +93,8 @@ public class Account implements java.io.Serializable{
     public void setType(String type) {
         this.type = AccountType.valueOf(type);
     }
+
+    
 
     @Override
     public String toString() {

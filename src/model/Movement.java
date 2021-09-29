@@ -38,7 +38,7 @@ public class Movement {
         return Id;
     }
 
-    public void setId(int Id) {
+    public void setId(long Id) {
         this.Id = Id;
     }
 
@@ -81,6 +81,8 @@ public class Movement {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    
 
     @Override
     public String toString() {
